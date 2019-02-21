@@ -1,7 +1,11 @@
 from googletrans import Translator, LANGUAGES
-from socket import socket
+from socket import *
 from threading import Thread
 #print(LANGUAGES)
+
+class Conector(object):
+	def __init__(self):
+		pass
 
 class Tradutor(object):
 	def __init__(self, lingua):
@@ -12,4 +16,3 @@ class Tradutor(object):
 	def traduzir(self, texto, lingua):
 		tra = self.translator.translate(texto, dest=self.lingua)
 		return tra.text
-
