@@ -1,21 +1,15 @@
 from googletrans import Translator, LANGUAGES
-translator = Translator()
-print(LANGUAGES)
-print()
-
-class Usuario(object):
-	def __init__(self, lingua):
-		self.lingua = lingua
-			
+from socket import socket
+from threading import Thread
+#print(LANGUAGES)
 
 class Tradutor(object):
-	def __init__(self):
+	def __init__(self, lingua):
 		self.translator = Translator()
+		self.usuario = Usuario(lingua)
+		self.lingua = lingua
 
-	def pt_en(self, texto):
-		tra = self.translator.translate(texto, dest="pt")
+	def traduzir(self, texto, lingua):
+		tra = self.translator.translate(texto, dest=self.lingua)
 		return tra.text
 
-	def en_pt(self, texto):
-		tra = self.translator.translate(texto, dest="en")
-		return tra.text
