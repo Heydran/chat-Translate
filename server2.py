@@ -33,16 +33,16 @@ class Server(object):
 			self.con, self.cliente = self.server.accept()
 			self.send.con.append(self.con)
 
-			Thread(target = self.enviar)
+			Thread(target = self.enviar).start()
 
 	def enviar(self):
 		while True:
-			for i in send.con:
+			for i in self.send.con:
 				#aceita uma mensagem
 				msg=i.recv(1024)
 				if not msg: break
-				print(str(self.cliente, msg,'utf-8'))
-				send.put(str(self.cliente, msg, 'utf-8'))
+				print(str(msg))
+				self.send.put(str(msg))
 
 
 
