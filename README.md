@@ -1,1 +1,1 @@
-Este programa é implementado em python e utiliza da biblioteca googletrans para consultar a API do google.
+Este programa é implementado em python e utiliza da biblioteca googletrans que consulta a API do google.
