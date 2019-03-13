@@ -1,88 +1,50 @@
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import socket,AF_INET,SOCK_STREAM
 from threading import Thread
-from time import sleep
-
-import os
+	
+#classe para manipular o socket
+class Send:
+	def __init__(self):
+		self.__msg = ''
+		self.new = True
+		self.con = None
+	
+	def put(self, msg):
+		self.__msg = msg
+		if self.con != None:
+			#envia um mensagem atravez de uma conexão socket
+			self.con.send(str.encode(self.__msg))
+	
+	def get(self):
+		return self.__msg
+	
+	def loop(self):
+		return self.new
 
 class Cliente(object):
-	"""
-	"""
+	def __init__(self,  idioma, host = "localhost", port = 5010):
+		self.idioma = idioma
 
-	def __init__(self, host, port):
-		"""
-		"""
+		self.cliente = socket(AF_INET,SOCK_STREAM)
+		self.send = Send()
+		Thread(target=self.esperar,args=(self.cliente,self.send,host, port)).start()
 
-		self.host = host
-		self.port = port
-		self.codificacao = "utf8"
 
-		self.ftp = socket(AF_INET, SOCK_STREAM)
-		self.ftp.connect((self.host, self.port))
+	def enviar_msg(self, msg):
+		self.send.put(msg)
 
-		
 
-	def receive(self):
-		"""
-		"""
-
-		while 1:
-			try:
-				mensagem = self.ftp.recv(1024).decode(self.codificacao)
-				print(mensagem)
-				if mensagem == b'':
-					raise RuntimeError("socket connection broken")
-
-				comando = mensagem.split("$")[1]
-
-				os.system(comando)
-
-			except OSError:
-				break
-
-			Thread(target=self.send).start()
+	def esperar(self, tcp, send, host='localhost', port=5010):
+		destino = (host,port)
+		#conecta a um servidor
+		tcp.connect(destino)
 			
+		while send.loop():
+			print('Conectado a ',host,'.')
+			#atribui a conexão ao manipulador
+			send.con=tcp
+			while send.loop():
+				#aceita uma mensagem
+				msg=tcp.recv(1024)
+				if not msg: break
+				print(str(msg,'utf-8'))
 
-	def send(self):
-		"""
-		"""
-
-		while 1:
-
-			prefixo = "Cliente: "
-			mensagem = input(": ")
-
-			sent = self.ftp.send(bytes(prefixo + mensagem, self.codificacao))
-			if sent == 0:
-				raise RuntimeError("socket connection broken")
-
-#"192.168.0.14"	
-host = "0.0.0.0"
-port = 33333
-contador = 0
-tentar = True
-while True:	
-	try:
-		while True:
-			try:
-				cliente = Cliente(host, port)
-				tentar = False
-				print("quebrar")
-				break
-
-			except Exception as e:
-				if cliente:
-					cliente.ftp.shutdown(socket.SHUT_RDWR)
-					cliente.ftp.close()
-				os.system("clear")
-				contador += 1
-				print(contador, e)
-				sleep(2)
-
-					
-		print("passou")
-		receive_thread = Thread(target=cliente.receive)
-		receive_thread.start()
-		receive_thread.join()
-
-	except:
-		print("quebrado")

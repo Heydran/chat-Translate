@@ -1,100 +1,48 @@
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import *
 from threading import Thread
 
+class Send:
+	def __init__(self):
+		self.__msg=''
+		self.new=True
+		self.con= []
+	def put(self,msg):
+		self.__msg=msg
+		if self.con != None:
+			#envia um mensagem atravez de uma conexão socket
+			for i in self.con:
+				i.send(str.encode(self.__msg))
+	def get(self):
+		return self.__msg
+	def loop(self):
+		return self.new
+
 class Server(object):
-	"""
-	"""
-
 	def __init__(self, host, port):
-		"""
-		"""
-
 		self.host = host
 		self.port = port
+		self.send = Send()
 
-		self.clientes = []
+		self.listaClientes = []
 		self.codificacao = "utf8"
 
-		self.tcp = socket(AF_INET, SOCK_STREAM)
-		self.tcp.bind((self.host, self.port))
+		self.server = socket(AF_INET, SOCK_STREAM)
+		self.server.bind((self.host, self.port))
+		while True:
+			self.server.listen(-1)
+			self.con, self.cliente = self.server.accept()
+			self.send.con.append(self.con)
 
-	def accept_incoming_connections(self):
-		"""
-		"""
+			Thread(target = self.enviar, args = (self.con,)).start()
 
-		while 1:
-			client, client_address = self.tcp.accept()
-			print("%s:%s conectou." % client_address)
+	def enviar(self, con):
+		while True:
+			#aceita uma mensagem
+			msg=con.recv(1024)
+			if not msg: break
+			print(str(msg))
+			self.send.put(str(msg))
 
-			mensagem = "Chat$Você entrou no servidor!"
-			client.send(bytes(mensagem, self.codificacao))
-
-			self.clientes.append((client, client_address))
-
-			Thread(target=self.handle_client, args=(client, )).start()
-
-
-	def handle_client(self, client):
-		"""
-		"""
-
-		while 1:
-			try:
-				Thread(target=self.send).start()
-				mensagem = client.recv(1024).decode(self.codificacao)
-				print(mensagem)
-
-			except RuntimeError as error:
-				print(error)
-
-
-			
-			
-
-	def send(self):
-		"""
-		"""
-
-		while 1:
-
-			prefixo = "Servidor$"
-			mensagem = input("")
-
-			self.broadcast(prefixo, mensagem)
-
-
-
-	def broadcast(self, prefixo, mensagem):
-		"""
-		"""
-
-		for sock in self.clientes:
-			try:
-				sock[0].send(bytes(prefixo + mensagem, self.codificacao))
-
-			except BrokenPipeError as error:
-				self.clientes.remove(sock)
-				print(sock[1] + "saiu.")
-				
-			except ConnectionResetError as error:
-				self.clientes.remove(sock)
-				print(sock[1] + "saiu.")
-	
-
-host = "191.52.7.30" #"192.168.0.14"
-port = 33333
-rodando = False
-while not rodando:
-	try:
-		servidor = Server(host, port)
-		servidor.tcp.listen(10)
-		rodando = True
-	except:
-		port += 1
-	
-	
-
-accept_thread = Thread(target=servidor.accept_incoming_connections)
-accept_thread.start()
-accept_thread.join()
-
+servidor = Server('localhost',5010)
+#while True:
+#	pass
