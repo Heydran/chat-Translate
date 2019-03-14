@@ -1,4 +1,5 @@
-import cliente
+from threading import Thread
+from cliente import Cliente, Send
 import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk as GTK
@@ -7,6 +8,8 @@ from gi.repository import Gdk
 class Window(GTK.Window):
 	def __init__(self, cliente):
 		GTK.Window.__init__(self, title = "Chat Auto Tradutor")
+		self.cliente = cliente
+		Thread(target = self.receber_mensagem).start()
 
 	def criar_janela(self):
 			self.box = GTK.Box()
@@ -29,13 +32,16 @@ class Window(GTK.Window):
 
 	def tecla_solta(self, widget, ev):
 		if ev.keyval == Gdk.KEY_Return:
+			self.cliente.enviar_msg(self.eMsg.get_text())
 			self.eMsg.set_text("")
 
 	def receber_mensagem(self):
-		pass#self.lCaixaTexto.set_text(self.lCaixaTexto.get_text() + "\n" + self.eMsg.get_text())
+		print("receber mensagem")
+		print(self.cliente.pegar_msg())
+		#self.lCaixaTexto.set_text(self.lCaixaTexto.get_text() + "\n" + self.cliente.pegar_msg())
 
 if __name__ == '__main__':
-	cliente = cliente.Cliente("pt")
+	cliente = Cliente("pt")
 	window = Window(cliente)
 	window.criar_janela()
 	window.connect("destroy", GTK.main_quit)

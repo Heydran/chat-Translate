@@ -40,9 +40,9 @@ class Server(object):
 			#aceita uma mensagem
 			msg=con.recv(1024)
 			if not msg: break
-			print(str(msg))
+			print(str(msg.decode()))
 			self.send.put(str(msg))
 
-servidor = Server('localhost',5010)
+servidor = Server('localhost',5011)
 #while True:
 #	pass
