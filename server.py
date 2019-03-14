@@ -43,6 +43,6 @@ class Server(object):
 			print(str(msg.decode()))
 			self.send.put(str(msg.decode()))
 
-servidor = Server('localhost',5014)
+servidor = Server("191.52.7.51",5014)
 #while True:
 #	pass

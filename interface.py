@@ -19,15 +19,18 @@ class Window(GTK.Window):
 			self.scrolled = GTK.ScrolledWindow()
 			self.scrolled.set_policy(GTK.PolicyType.NEVER, GTK.PolicyType.AUTOMATIC)
 
-			self.lCaixaTexto = GTK.Label(label = "")
+			self.grid = GTK.Grid()
+
+			self.lCaixaTexto = GTK.Label(label = ".\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n")
 
 			self.connect("key-release-event", self.tecla_solta)
 			
 			self.eMsg = GTK.Entry()
-
-			self.Vbox1.add(self.lCaixaTexto)
+			self.scrolled.add(self.lCaixaTexto)
+			self.grid.attach(self.scrolled, 0,0,1,1)
 			self.Vbox1.add(self.eMsg)
 
+			self.box.add(self.grid)
 			self.box.add(self.Vbox1)
 			self.add(self.box)
 
@@ -44,9 +47,9 @@ class Window(GTK.Window):
 				self.cliente.resetar()
 
 if __name__ == '__main__':
-	cliente = Cliente("pt")
+	cliente = Cliente("pt", "191.52.7.51")
 	window = Window(cliente)
 	window.criar_janela()
 	window.connect("destroy", GTK.main_quit)
 	window.show_all()
-	GTK.main()	
+	GTK.main()
