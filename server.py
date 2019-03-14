@@ -41,8 +41,8 @@ class Server(object):
 			msg=con.recv(1024)
 			if not msg: break
 			print(str(msg.decode()))
-			self.send.put(str(msg))
+			self.send.put(str(msg.decode()))
 
-servidor = Server('localhost',5011)
+servidor = Server('localhost',5014)
 #while True:
 #	pass

@@ -21,7 +21,7 @@ class Send:
 		return self.new
 
 class Cliente(object):
-	def __init__(self,  idioma, host = "localhost", port = 5011):
+	def __init__(self,  idioma, host = "localhost", port = 5014):
 		self.idioma = idioma
 		self.msg = None
 		self.cliente = socket(AF_INET,SOCK_STREAM)
@@ -33,7 +33,7 @@ class Cliente(object):
 		self.send.put(msg)
 
 
-	def esperar(self, tcp, send, host='localhost', port=5011):
+	def esperar(self, tcp, send, host='localhost', port=5010):
 		destino = (host,port)
 		#conecta a um servidor
 		tcp.connect(destino)
@@ -46,11 +46,9 @@ class Cliente(object):
 				#aceita uma mensagem
 				self.msg=tcp.recv(1024)
 				if not self.msg: break
-				self.tem_mensagem = True
-				self.msg = self.msg.decode()
-				#ARRUMAR ESSE DECODE
-				print("print:" + self.msg())
 	def pegar_msg(self):
 		if self.msg: 
-			return self.msg
+			return self.msg.decode()
 
+	def resetar(self):
+		self.msg = None

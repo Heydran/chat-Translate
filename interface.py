@@ -8,21 +8,22 @@ from gi.repository import Gdk
 class Window(GTK.Window):
 	def __init__(self, cliente):
 		GTK.Window.__init__(self, title = "Chat Auto Tradutor")
+		self.set_default_size(800, 600)
 		self.cliente = cliente
 		Thread(target = self.receber_mensagem).start()
 
 	def criar_janela(self):
 			self.box = GTK.Box()
 			self.Vbox1 = GTK.VBox()
-
+			
+			self.scrolled = GTK.ScrolledWindow()
+			self.scrolled.set_policy(GTK.PolicyType.NEVER, GTK.PolicyType.AUTOMATIC)
 
 			self.lCaixaTexto = GTK.Label(label = "")
 
 			self.connect("key-release-event", self.tecla_solta)
 			
 			self.eMsg = GTK.Entry()
-
-			self.bMus1 = GTK.Button(label = "Play")
 
 			self.Vbox1.add(self.lCaixaTexto)
 			self.Vbox1.add(self.eMsg)
@@ -36,9 +37,11 @@ class Window(GTK.Window):
 			self.eMsg.set_text("")
 
 	def receber_mensagem(self):
-		print("receber mensagem")
-		print(self.cliente.pegar_msg())
-		#self.lCaixaTexto.set_text(self.lCaixaTexto.get_text() + "\n" + self.cliente.pegar_msg())
+		while True:
+			msg = self.cliente.pegar_msg()
+			if msg:
+				self.lCaixaTexto.set_text(self.lCaixaTexto.get_text() + "\n" + msg)
+				self.cliente.resetar()
 
 if __name__ == '__main__':
 	cliente = Cliente("pt")
