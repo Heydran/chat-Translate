@@ -34,9 +34,9 @@ class Window(GTK.Window):
 
 			self.scrolled.add(self.lCaixaTexto)
 			self.Vbox1.add(self.scrolled)
-			self.Hbox1.add(self.eMsg)
+			self.Hbox1.pack_start(self.eMsg,  True, True, 0)
 			self.Hbox1.add(self.but)
-			self.Vbox1.add(self.Hbox1)
+			self.Vbox1.pack_start(self.Hbox1, True, True, 0)
 			self.box.add(self.Vbox1)
 			self.add(self.box)
 
