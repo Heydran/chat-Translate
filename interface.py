@@ -15,24 +15,31 @@ class Window(GTK.Window):
 	def criar_janela(self):
 			self.box = GTK.Box()
 			self.Vbox1 = GTK.VBox()
+			self.Hbox1 = GTK.HBox()
+			
 			
 			self.scrolled = GTK.ScrolledWindow()
 			self.scrolled.set_policy(GTK.PolicyType.NEVER, GTK.PolicyType.AUTOMATIC)
 
-			self.grid = GTK.Grid()
+			self.but = GTK.Button(label = "Enviar")
 
-			self.lCaixaTexto = GTK.Label(label = ".\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n")
+			self.lCaixaTexto = GTK.Label()
+
 
 			self.connect("key-release-event", self.tecla_solta)
 			
 			self.eMsg = GTK.Entry()
-			self.scrolled.add(self.lCaixaTexto)
-			self.grid.attach(self.scrolled, 0,0,1,1)
-			self.Vbox1.add(self.eMsg)
+			self.eMsg.set_property("width-request", 800)
+			
 
-			self.box.add(self.grid)
+			self.scrolled.add(self.lCaixaTexto)
+			self.Vbox1.add(self.scrolled)
+			self.Hbox1.add(self.eMsg)
+			self.Hbox1.add(self.but)
+			self.Vbox1.add(self.Hbox1)
 			self.box.add(self.Vbox1)
 			self.add(self.box)
+
 
 	def tecla_solta(self, widget, ev):
 		if ev.keyval == Gdk.KEY_Return:
