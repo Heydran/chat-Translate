@@ -3,6 +3,7 @@ from threading import Thread
 	
 #classe para manipular o socket
 class Send:
+
 	def __init__(self):
 		self.__msg = ''
 		self.new = True
@@ -21,19 +22,22 @@ class Send:
 		return self.new
 
 class Cliente(object):
-	def __init__(self,  idioma, host = "localhost", port = 5014):
+
+	def __init__(self,  idioma, host = "localhost", port = 5015):
+
 		self.idioma = idioma
 		self.msg = None
 		self.cliente = socket(AF_INET,SOCK_STREAM)
 		self.send = Send()
 		self.tem_mensagem = False
-		self.processo = Thread(target=self.esperar,args=(self.cliente,self.send,host, port)).start()
+		Thread(target=self.esperar,args=(self.cliente,self.send,host, port)).start()
 
 	def enviar_msg(self, msg):
 		self.send.put(msg)
 
 
-	def esperar(self, tcp, send, host='localhost', port=5010):
+	def esperar(self, tcp, send, host='localhost', port=5015):
+		
 		destino = (host,port)
 		#conecta a um servidor
 		tcp.connect(destino)
@@ -46,6 +50,7 @@ class Cliente(object):
 				#aceita uma mensagem
 				self.msg=tcp.recv(1024)
 				if not self.msg: break
+
 	def pegar_msg(self):
 		if self.msg: 
 			return self.msg.decode()
