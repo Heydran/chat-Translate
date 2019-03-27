@@ -19,6 +19,8 @@ class Window(GTK.Window):
 			self.box = GTK.Box()
 			self.Vbox1 = GTK.VBox()
 			self.Hbox1 = GTK.HBox()
+			self.boxTexto = GTK.Box(orientation = GTK.Orientation.VERTICAL)
+			self.boxTexto2 = GTK.Box()
 			
 			
 			self.scrolled = GTK.ScrolledWindow()
@@ -29,14 +31,16 @@ class Window(GTK.Window):
 			self.but.connect("clicked", self.enviar_mensagem)
 
 			self.lCaixaTexto = GTK.Label()
-
-
+			self.lCaixaTexto.set_markup("<b>asasbab \ndsada\ndsadsadsadsa\nsad</b>")
+			#self.lCaixaTexto.set_line_wrap(True)
 			self.connect("key-release-event", self.tecla_solta)
 			
 			self.eMsg = GTK.Entry()
 			self.eMsg.set_property("width-request", 750)
 
-			self.scrolled.add(self.lCaixaTexto)
+			self.boxTexto2.pack_start(self.lCaixaTexto, False ,True, 10)
+			self.boxTexto.pack_start(self.boxTexto2, False ,True, 10)
+			self.scrolled.add(self.boxTexto)
 			self.Vbox1.add(self.scrolled)
 			self.Hbox1.pack_start(self.eMsg,  False, True, 0)
 			self.Hbox1.add(self.but)
@@ -62,12 +66,13 @@ class Window(GTK.Window):
 			msg = self.cliente.pegar_msg()
 			if msg:
 
-				self.lCaixaTexto.set_text(self.lCaixaTexto.get_text() + "\n" + msg)
+				self.lCaixaTexto.set_text(self.lCaixaTexto.get_text() + "\n" + "Eu: " + msg)
+				self.lCaixaTexto.set_line_wrap(True)
 				self.cliente.resetar()
 
 if __name__ == '__main__':
 
-	cliente = Cliente("pt", "191.52.7.39")
+	cliente = Cliente("pt", "191.52.7.95")
 	window = Window(cliente)
 	window.criar_janela()
 	window.connect("destroy", GTK.main_quit)

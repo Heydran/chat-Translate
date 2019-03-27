@@ -1,5 +1,7 @@
 from socket import socket,AF_INET,SOCK_STREAM
 from threading import Thread
+from signal import SIGKILL
+from os import kill, getpid
 	
 #classe para manipular o socket
 class Send:
@@ -23,36 +25,43 @@ class Send:
 
 class Cliente(object):
 
-	def __init__(self,  idioma, host = "localhost", port = 5014):
+	def __init__(self,  idioma, host = "localhost", port = 5021):
 
 		self.idioma = idioma
 		self.msg = None
 		self.cliente = socket(AF_INET,SOCK_STREAM)
 		self.send = Send()
 		self.tem_mensagem = False
-		Thread(target=self.esperar,args=(self.cliente,self.send,host, port)).start()
+		self.processo=Thread(target=self.esperar,args=(self.cliente,self.send,host, port))
+		self.processo.start()
 
 	def enviar_msg(self, msg):
 		self.send.put(msg)
 
 
-	def esperar(self, tcp, send, host='localhost', port=5014):
+	def esperar(self, tcp, send, host='localhost', port=5020):
 		
 		destino = (host,port)
 		#conecta a um servidor
-		tcp.connect(destino)
-			
-		while True:
-			print('Conectado a ',host,'.')
-			#atribui a conexão ao manipulador
-			send.con=tcp
-			armazenar = send.loop()
-			print(armazenar)
-			while armazenar:
-				#aceita uma mensagem
-				self.msg=tcp.recv(1024)
-				if not self.msg: break
+		try:
+			tcp.connect(destino)
+				
+			while True:
+				print('Conectado a ',host,'.')
+				#atribui a conexão ao manipulador
+				send.con=tcp
+				armazenar = send.loop()
+				print(armazenar)
+				while armazenar:
+					#aceita uma mensagem
+					self.msg=tcp.recv(1024)
+					if not self.msg: break
+		except:
+			print("nao foi possivel conectar")
+			kill(getpid(), SIGKILL)
 
+		self.processo.stop()
+		
 	def pegar_msg(self):
 		if self.msg: 
 			return self.msg.decode()

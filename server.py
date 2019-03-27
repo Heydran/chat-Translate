@@ -18,7 +18,11 @@ class Send:
 		return self.new
 
 class Server(object):
+
 	def __init__(self, host, port):
+		
+		print("Rodando...")
+
 		self.host = host
 		self.port = port
 		self.send = Send()
@@ -44,6 +48,6 @@ class Server(object):
 			print(str(msg.decode()))
 			self.send.put(str(msg.decode()))
 
-servidor = Server("191.52.7.39",5014)
+servidor = Server("191.52.7.95",5021)
 #while True:
 #	pass
