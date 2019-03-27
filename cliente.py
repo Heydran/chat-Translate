@@ -23,7 +23,7 @@ class Send:
 
 class Cliente(object):
 
-	def __init__(self,  idioma, host = "localhost", port = 5015):
+	def __init__(self,  idioma, host = "localhost", port = 5014):
 
 		self.idioma = idioma
 		self.msg = None
@@ -36,17 +36,19 @@ class Cliente(object):
 		self.send.put(msg)
 
 
-	def esperar(self, tcp, send, host='localhost', port=5015):
+	def esperar(self, tcp, send, host='localhost', port=5014):
 		
 		destino = (host,port)
 		#conecta a um servidor
 		tcp.connect(destino)
 			
-		while send.loop():
+		while True:
 			print('Conectado a ',host,'.')
 			#atribui a conexão ao manipulador
 			send.con=tcp
-			while send.loop():
+			armazenar = send.loop()
+			print(armazenar)
+			while armazenar:
 				#aceita uma mensagem
 				self.msg=tcp.recv(1024)
 				if not self.msg: break

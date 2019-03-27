@@ -27,6 +27,7 @@ class Server(object):
 		self.codificacao = "utf8"
 
 		self.server = socket(AF_INET, SOCK_STREAM)
+		self.server.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 		self.server.bind((self.host, self.port))
 		while True:
 			self.server.listen(-1)
@@ -43,6 +44,6 @@ class Server(object):
 			print(str(msg.decode()))
 			self.send.put(str(msg.decode()))
 
-servidor = Server("191.52.7.39",5015)
+servidor = Server("191.52.7.39",5014)
 #while True:
 #	pass

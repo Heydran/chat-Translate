@@ -26,7 +26,10 @@ class Window(GTK.Window):
 
 			self.but = GTK.Button(label = "Enviar")
 
+			self.but.connect("clicked", self.enviar_mensagem)
+
 			self.lCaixaTexto = GTK.Label()
+
 
 			self.connect("key-release-event", self.tecla_solta)
 			
@@ -42,17 +45,23 @@ class Window(GTK.Window):
 			self.add(self.box)
 
 
+	def enviar_mensagem(self, widget):
+		texto = self.eMsg.get_text()
+		if (texto != ""):
+			self.cliente.enviar_msg(texto)
+			self.eMsg.set_text("")
+
 	def tecla_solta(self, widget, ev):
 
 		if ev.keyval == Gdk.KEY_Return:
-			self.cliente.enviar_msg(self.eMsg.get_text())
-			self.eMsg.set_text("")
+			self.enviar_mensagem(widget)
 
 	def receber_mensagem(self):
 
 		while True:
 			msg = self.cliente.pegar_msg()
 			if msg:
+
 				self.lCaixaTexto.set_text(self.lCaixaTexto.get_text() + "\n" + msg)
 				self.cliente.resetar()
 
