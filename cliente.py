@@ -19,9 +19,6 @@ class Send:
 	
 	def get(self):
 		return self.__msg
-	
-	def loop(self):
-		return self.new
 
 class Cliente(object):
 
@@ -50,9 +47,7 @@ class Cliente(object):
 				print('Conectado a ',host,'.')
 				#atribui a conexão ao manipulador
 				send.con=tcp
-				armazenar = send.loop()
-				print(armazenar)
-				while armazenar:
+				while True:
 					#aceita uma mensagem
 					self.msg=tcp.recv(1024)
 					if not self.msg: break
@@ -65,6 +60,9 @@ class Cliente(object):
 	def pegar_msg(self):
 		if self.msg: 
 			return self.msg.decode()
+
+	def fechar(self, widget):
+		kill(getpid(), SIGKILL)
 
 	def resetar(self):
 		self.msg = None

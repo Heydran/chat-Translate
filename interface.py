@@ -72,9 +72,9 @@ class Window(GTK.Window):
 
 if __name__ == '__main__':
 
-	cliente = Cliente("pt", "191.52.7.95")
+	cliente = Cliente("pt", "0.0.0.0")
 	window = Window(cliente)
 	window.criar_janela()
-	window.connect("destroy", GTK.main_quit)
+	window.connect("destroy", cliente.fechar)
 	window.show_all()
 	GTK.main()
