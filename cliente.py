@@ -2,6 +2,7 @@ from socket import socket,AF_INET,SOCK_STREAM
 from threading import Thread
 from signal import SIGKILL
 from os import kill, getpid
+import tradutor
 	
 #classe para manipular o socket
 class Send:
@@ -25,6 +26,7 @@ class Cliente(object):
 	def __init__(self,  idioma, host = "localhost", port = 5021):
 
 		self.idioma = idioma
+		self.tradutor = tradutor.Tradutor(self.idioma)
 		self.msg = None
 		self.cliente = socket(AF_INET,SOCK_STREAM)
 		self.send = Send()
@@ -58,8 +60,8 @@ class Cliente(object):
 		self.processo.stop()
 		
 	def pegar_msg(self):
-		if self.msg: 
-			return self.msg.decode()
+		if self.msg:
+			return self.tradutor.traduzir(self.msg.decode())
 
 	def fechar(self, widget):
 		kill(getpid(), SIGKILL)

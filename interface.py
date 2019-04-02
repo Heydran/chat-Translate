@@ -31,7 +31,7 @@ class Window(GTK.Window):
 			self.but.connect("clicked", self.enviar_mensagem)
 
 			self.lCaixaTexto = GTK.Label()
-			self.lCaixaTexto.set_markup("<b>asasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsad</b>")
+			#self.lCaixaTexto.set_markup("")
 			self.connect("key-release-event", self.tecla_solta)
 			
 			self.eMsg = GTK.Entry()
@@ -65,12 +65,9 @@ class Window(GTK.Window):
 			msg = self.cliente.pegar_msg()
 			if msg:
 
-				self.lCaixaTexto.set_text(self.lCaixaTexto.get_text() +msg + '\n')
+				self.lCaixaTexto.set_text(self.lCaixaTexto.get_text() + msg + '\n')
 				adj = self.scrolled.get_vadjustment()
 				adj.set_value(adj.get_upper() - adj.get_page_size())
-				print(adj)
-				print(adj.get_upper())
-				print(adj.get_page_size())
 				self.cliente.resetar()
 
 if __name__ == '__main__':
