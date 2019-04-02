@@ -31,8 +31,7 @@ class Window(GTK.Window):
 			self.but.connect("clicked", self.enviar_mensagem)
 
 			self.lCaixaTexto = GTK.Label()
-			self.lCaixaTexto.set_markup("<b>asasbab \ndsada\ndsadsadsadsa\nsad</b>")
-			#self.lCaixaTexto.set_line_wrap(True)
+			self.lCaixaTexto.set_markup("<b>asasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsadasasbab \ndsada\ndsadsadsadsa\nsad</b>")
 			self.connect("key-release-event", self.tecla_solta)
 			
 			self.eMsg = GTK.Entry()
@@ -41,7 +40,7 @@ class Window(GTK.Window):
 			self.boxTexto2.pack_start(self.lCaixaTexto, False ,True, 10)
 			self.boxTexto.pack_start(self.boxTexto2, False ,True, 10)
 			self.scrolled.add(self.boxTexto)
-			self.Vbox1.add(self.scrolled)
+			self.Vbox1.add(self.scrolled)	
 			self.Hbox1.pack_start(self.eMsg,  False, True, 0)
 			self.Hbox1.add(self.but)
 			self.Vbox1.pack_start(self.Hbox1, False, True, 0)
@@ -66,8 +65,12 @@ class Window(GTK.Window):
 			msg = self.cliente.pegar_msg()
 			if msg:
 
-				self.lCaixaTexto.set_text(self.lCaixaTexto.get_text() + "\n" + "Eu: " + msg)
-				self.lCaixaTexto.set_line_wrap(True)
+				self.lCaixaTexto.set_text(self.lCaixaTexto.get_text() +msg + '\n')
+				adj = self.scrolled.get_vadjustment()
+				adj.set_value(adj.get_upper() - adj.get_page_size())
+				print(adj)
+				print(adj.get_upper())
+				print(adj.get_page_size())
 				self.cliente.resetar()
 
 if __name__ == '__main__':
