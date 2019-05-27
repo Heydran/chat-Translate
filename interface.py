@@ -31,7 +31,7 @@ class Window(GTK.Window):
 			self.but.connect("clicked", self.enviar_mensagem)
 
 			self.lCaixaTexto = GTK.Label()
-			#self.lCaixaTexto.set_markup("")
+			self.lCaixaTexto.set_markup("dsadasdsad\nasdasdasdas\ndsadasdasdads\ndsadasdsad\nasdasdasdas\ndsadasdasdads\ndsadasdsad\nasdasdasdas\ndsadasdasdads\ndsadasdsad\nasdasdasdas\ndsadasdasdads\ndsadasdsad\nasdasdasdas\ndsadasdasdads\ndsadasdsad\nasdasdasdas\ndsadasdasdads\ndsadasdsad\nasdasdasdas\ndsadasdasdads\n")
 			self.connect("key-release-event", self.tecla_solta)
 			
 			self.eMsg = GTK.Entry()
@@ -72,7 +72,7 @@ class Window(GTK.Window):
 
 if __name__ == '__main__':
 
-	cliente = Cliente("pt", "0.0.0.0")
+	cliente = Cliente("en", "0.0.0.0")
 	window = Window(cliente)
 	window.criar_janela()
 	window.connect("destroy", cliente.fechar)

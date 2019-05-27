@@ -48,6 +48,7 @@ class Server(object):
 			print(str(msg.decode()))
 			self.send.put(str(msg.decode()))
 
-servidor = Server("0.0.0.0",5021)
+if __name__ == '__main__':
+	servidor = Server("0.0.0.0",5021)
 #while True:
 #	pass
