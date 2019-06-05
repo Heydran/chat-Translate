@@ -1,0 +1,11 @@
+#chat {
+  height: 90px;
+  border: 1px solid black;
+}
+#chat.big {
+  height: 500px;
+}
+
+window.frames["chat"].document.getElementById("click").onclick = function(){
+  document.getElementById("chat").className = "big";
+};

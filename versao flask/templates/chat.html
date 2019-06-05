@@ -1,9 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Chat</title>
+	<title></title>
+		<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/estilo.css')}}">
 </head>
 <body>
+
+
+	<iframe id="chat" name="chat" sandbox="allow-scripts allow-same-origin" frameborder="1" src="/msg_box?user={{user}}">
+	</iframe>
+
+
+	<FORM action="/send">
+		<input type="text" name="msg">
+		<button>Enviar</button>
+	</FORM>
 
 </body>
 </html>
