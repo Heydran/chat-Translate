@@ -4,8 +4,11 @@
 	<title></title>
 </head>
 <body>
+	
 	{%for m in msg%}
-		{{user}}:{{m}}<br>
+		{{m.nom_usuario}}:{{m.mensagem}}<br>
 	{%endfor%}
+	<div id="bottom"></div>
+	<script type="text/javascript">document.getElementById( 'bottom' ).scrollIntoView();</script>
 </body>
 </html>

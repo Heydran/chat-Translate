@@ -1,32 +1,30 @@
-from flask import Flask, render_template, request, redirect
-
-global_user = ["Default"]
+from flask import Flask, render_template, request, redirect, session
+from peewee_site import *
 
 app = Flask(__name__)
 app.secret_key = 'senha'
-msg = ["ola","hellow"]
 
 @app.route("/")
-def home():
-	return render_template("home.html")
+def inicio():
+	return render_template("inicio.html")
 
-@app.route("/send")
-def send():
+@app.route("/enviar")
+def enviar():
+	m = Mensagem(mensagem = request.args.get("msg"), cod_usuario = session["cod_usuario"]).save()
+	return render_template("chat.html")
 
-	m = request.args.get("msg")
-	msg.append(m)
-	print(global_user)
-	return render_template("chat.html", user = global_user, key = "duh")
+@app.route("/sala_chat")
+def sala_chat():
+	session["usuario"] = request.args.get("usuario")
+	session["sala"] = request.args.get("sala")
+	session["cod_usuario"] = pegar_cod(session["usuario"])
 
-@app.route("/entry_room")
-def entry_room():
-	global_user[0] = request.args.get("user")
-	return render_template("chat.html", user = global_user, key = "duh")
+	return render_template("chat.html")
 
 @app.route("/msg_box")
-def chat():
-	return render_template("msg_box.html", msg = msg, user = global_user[0])
+def msg_box():
+	msg = pegar_mensagens()
+	return render_template("msg_box.html", msg = msg)
 
 if __name__ == "__main__":
-
 	app.run(debug = True)
