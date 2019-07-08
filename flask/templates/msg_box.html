@@ -4,9 +4,9 @@
 	<title></title>
 </head>
 <body>
-	
+	 <meta http-equiv="refresh" content="5" >
 	{%for m in msg%}
-		{{m.nom_usuario}}:{{m.mensagem}}<br>
+		{{m.usuario.nom_usuario}}:{{m.mensagem}}<br>
 	{%endfor%}
 	<div id="bottom"></div>
 	<script type="text/javascript">document.getElementById( 'bottom' ).scrollIntoView();</script>
