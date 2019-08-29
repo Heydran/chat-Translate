@@ -27,7 +27,18 @@ def sala_chat():
 def enviar():
 	global tradutor
 	Mensagem(mensagem = tradutor.traduzir(request.args.get("msg")), usuario = session["cod_usuario"]).save()
-	return render_template("chat.html", msglog = pegar_mensagens())
+	return render_template("chat.html", msglog = pegar_mensagens(),  user = session["usuario"])
+
+@app.route("/login")
+def login():
+	usuario = request.args.get("usuario")
+	senha = request.args.get("senha")
+
+	if (usuario != None) and (senha != None):
+		if  senha == pegar_senha(usuario):
+			session["logado"] = True
+			return redirect("/sala_chat")
+	return render_template("login incorreto, tente novamente!")
 
 if __name__ == "__main__":
 	app.run(debug = True, host ="0.0.0.0")
