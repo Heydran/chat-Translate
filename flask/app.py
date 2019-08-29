@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 from peewee_site import *
 from tradutor import *
-tradutor = None
+tradutor = Tradutor("pt")
 app = Flask(__name__)
 app.secret_key = 'senha'
 
@@ -21,19 +21,13 @@ def sala_chat():
 	global tradutor
 	tradutor = Tradutor("pt")
 
-	return render_template("chat.html")
+	return render_template("chat.html", msglog = pegar_mensagens(), user = session["usuario"])
 
 @app.route("/enviar")
 def enviar():
 	global tradutor
-	m = Mensagem(mensagem = tradutor.traduzir(request.args.get("msg")), usuario = session["cod_usuario"]).save()
-	return render_template("chat.html")
-
-
-@app.route("/msg_box")
-def msg_box():
-	msg = pegar_mensagens()
-	return render_template("msg_box.html", msg = msg)
+	Mensagem(mensagem = tradutor.traduzir(request.args.get("msg")), usuario = session["cod_usuario"]).save()
+	return render_template("chat.html", msglog = pegar_mensagens())
 
 if __name__ == "__main__":
 	app.run(debug = True, host ="0.0.0.0")
