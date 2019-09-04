@@ -11,34 +11,44 @@ def inicio():
 
 @app.route("/sala_chat")
 def sala_chat():
-	session["usuario"] = request.args.get("usuario")
-	session["sala"] = request.args.get("sala")
-	try:
-		session["cod_usuario"] = pegar_cod(session["usuario"])
-	except:
-		Usuario(nom_usuario = session["usuario"]).save()
-		session["cod_usuario"] = pegar_cod(session["usuario"])
 	global tradutor
 	tradutor = Tradutor("pt")
 
-	return render_template("chat.html", msglog = pegar_mensagens(), user = session["usuario"])
+	return render_template("chat.html", msglog = pegar_mensagens(), usuario = session["usuario"])
 
 @app.route("/enviar")
 def enviar():
 	global tradutor
-	Mensagem(mensagem = tradutor.traduzir(request.args.get("msg")), usuario = session["cod_usuario"]).save()
-	return render_template("chat.html", msglog = pegar_mensagens(),  user = session["usuario"])
+	salvar_mensagem(tradutor.traduzir(request.args.get("msg")), session["cod_usuario"])
+	return render_template("chat.html", msglog = pegar_mensagens(),  usuario = session["usuario"])
 
 @app.route("/login")
 def login():
-	usuario = request.args.get("usuario")
+	login = request.args.get("login")
 	senha = request.args.get("senha")
 
-	if (usuario != None) and (senha != None):
-		if  senha == pegar_senha(usuario):
+	if (login != None) and (senha != None):
+		if  senha == pegar_senha(login):
 			session["logado"] = True
+			session["usuario"] = pegar_nome(login)
+			session["login"] = login
+			session["cod_usuario"] = pegar_cod(login)
 			return redirect("/sala_chat")
 	return render_template("login incorreto, tente novamente!")
+
+@app.route("/form_cadastrar")
+def form_cadastrar():
+	return render_template("form_cadastrar.html")
+
+@app.route("/cadastrar")
+def cadastrar():
+	login = request.args.get("login")
+	senha = request.args.get("senha")
+	nome = request.args.get("nome")
+
+	cadastrar_usuario(login, senha, nome)
+
+	return redirect("/")
 
 if __name__ == "__main__":
 	app.run(debug = True, host ="0.0.0.0")
