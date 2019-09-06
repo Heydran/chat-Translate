@@ -11,16 +11,19 @@ def inicio():
 
 @app.route("/sala_chat")
 def sala_chat():
-	global tradutor
-	tradutor = Tradutor("pt")
+	return render_template("chat.html", msglog = pedir_mensagens(session["sala"]), usuario = session["usuario"])
 
-	return render_template("chat.html", msglog = pegar_mensagens(), usuario = session["usuario"])
+def pedir_mensagens(sala):
+	global tradutor
+	mensagens = pegar_mensagens(sala)
+	for i in mensagens:
+		i.conteudo = tradutor.traduzir((i.conteudo))
+	return mensagens[::-1]
 
 @app.route("/enviar")
 def enviar():
-	global tradutor
-	salvar_mensagem(tradutor.traduzir(request.args.get("msg")), session["cod_usuario"])
-	return render_template("chat.html", msglog = pegar_mensagens(),  usuario = session["usuario"])
+	salvar_mensagem((request.args.get("msg")), session["cod_usuario"], session["sala"])
+	return render_template("chat.html", msglog = pedir_mensagens(session["sala"]),  usuario = session["usuario"])
 
 @app.route("/login")
 def login():
@@ -33,6 +36,7 @@ def login():
 			session["usuario"] = pegar_nome(login)
 			session["login"] = login
 			session["cod_usuario"] = pegar_cod(login)
+			session["sala"] = request.args.get("sala")
 			return redirect("/sala_chat")
 	return render_template("login_incorreto.html")
 

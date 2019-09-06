@@ -17,9 +17,11 @@ class Mensagem(Modelo):
 	cod_mensagem = AutoField(primary_key = True)
 	conteudo = CharField()
 	usuario = ForeignKeyField(Usuario, column_name = "cod_usuario")
+	sala = CharField()
 
-def salvar_mensagem(conteudo, cod_usuario):
-	Mensagem(conteudo = conteudo, usuario = cod_usuario).save()
+
+def salvar_mensagem(conteudo, cod_usuario, sala):
+	Mensagem(conteudo = conteudo, usuario = cod_usuario, sala = sala).save()
 
 def pegar_cod(login):
 	try:
@@ -38,11 +40,14 @@ def pegar_senha(login):
 		return Usuario.select().where(Usuario.login == login)[0].senha
 	except:
 		return None
-def pegar_mensagens():
-	return Mensagem.select()
+
+def pegar_mensagens(sala):
+	return Mensagem.select().where(Mensagem.sala == sala).order_by(Mensagem.cod_mensagem.desc()).limit(10)
 
 def cadastrar_usuario(login, senha, nome):
 	Usuario(nom_usuario = nome, senha = senha, login = login).save()
+
+db.create_tables([Usuario, Mensagem])
 
 if __name__ == '__main__':
 	
@@ -55,6 +60,6 @@ if __name__ == '__main__':
 	Usuario(nom_usuario = "nome", senha = "senha", login = "login").save()
 	
 
-	for i in Usuario.select():
-		print(i.login)
+	for i in Mensagem.select().order_by(Mensagem.cod_mensagem.desc()).limit(5):
+		print(i)
 	
