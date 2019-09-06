@@ -22,14 +22,22 @@ def salvar_mensagem(conteudo, cod_usuario):
 	Mensagem(conteudo = conteudo, usuario = cod_usuario).save()
 
 def pegar_cod(login):
-	return Usuario.select().where(Usuario.login == login)[0].cod_usuario
+	try:
+		return Usuario.select().where(Usuario.login == login)[0].cod_usuario
+	except:
+		return None
 
 def pegar_nome(login):
-	return Usuario.select().where(Usuario.login == login)[0].nom_usuario
+	try:
+		return Usuario.select().where(Usuario.login == login)[0].nom_usuario
+	except:
+		return None
 
 def pegar_senha(login):
-	return Usuario.select().where(Usuario.login == login)[0].senha
-
+	try:
+		return Usuario.select().where(Usuario.login == login)[0].senha
+	except:
+		return None
 def pegar_mensagens():
 	return Mensagem.select()
 

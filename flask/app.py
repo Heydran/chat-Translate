@@ -34,7 +34,7 @@ def login():
 			session["login"] = login
 			session["cod_usuario"] = pegar_cod(login)
 			return redirect("/sala_chat")
-	return render_template("login incorreto, tente novamente!")
+	return render_template("login_incorreto.html")
 
 @app.route("/form_cadastrar")
 def form_cadastrar():
@@ -49,6 +49,15 @@ def cadastrar():
 	cadastrar_usuario(login, senha, nome)
 
 	return redirect("/")
+
+@app.route("/logout")
+def logout():
+	session["logado"] = False
+	session["usuario"] = None
+	session["login"] = None
+	session["cod_usuario"] = None
+	return redirect("/")
+			
 
 if __name__ == "__main__":
 	app.run(debug = True, host ="0.0.0.0")
