@@ -6,12 +6,19 @@
 
 </head>
 <body>
-	<form action='/login'>
-		Usuario <input type="text" name="login"><br>
-		Senha <input type="text" name="senha"><br>
-		Sala <input type="text" name="sala"><br>
-		<button>Entrar</button>
-	</form>
-	<a href="/form_cadastrar">Cadastrar</a>
+	{%if session["logado"]%}
+		<h2>Você esta logado como {{session["usuario"]}}</h2>
+		<form action = /criar_sala>
+		Sala <input type="text" name="nome_sala"><button>Entrar</button>
+		</form>
+		<a href="/form_criar_sala">Criar Sala</a>
+	{%else%}
+		<form action='/login'>
+			Usuario <input type="text" name="login"><br>
+			Senha <input type="text" name="senha"><br>
+			<button>Entrar</button>
+		</form>
+		<a href="/form_cadastrar">Cadastrar</a>		
+	{%endif%}
 </body>
 </html>

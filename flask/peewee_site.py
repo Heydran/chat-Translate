@@ -4,20 +4,29 @@ db = SqliteDatabase("Mensagens.db")
 db.connect()
 
 class Modelo(Model):
+
 	class Meta:
+
 		database = db
 
 class Usuario(Modelo):
+
 	cod_usuario = AutoField(primary_key = True)
 	nom_usuario =  CharField()
 	senha = CharField()
 	login = CharField()
 
+class Sala(Modelo):
+
+	cod_sala = AutoField(primary_key = True)
+	nome = CharField()
+
 class Mensagem(Modelo):
+
 	cod_mensagem = AutoField(primary_key = True)
 	conteudo = CharField()
 	usuario = ForeignKeyField(Usuario, column_name = "cod_usuario")
-	sala = CharField()
+	sala = ForeignKeyField(Sala)
 
 
 def salvar_mensagem(conteudo, cod_usuario, sala):
@@ -41,24 +50,34 @@ def pegar_senha(login):
 	except:
 		return None
 
+def criar_sala_bd(nome_sala):
+
+	if (nome_sala == ""):
+		return None
+
+	print(nome_sala)
+
+	Sala(nome = nome_sala).save()
+
+	return True
+
 def pegar_mensagens(sala):
 	return Mensagem.select().where(Mensagem.sala == sala).order_by(Mensagem.cod_mensagem.desc()).limit(10)
 
 def cadastrar_usuario(login, senha, nome):
 	Usuario(nom_usuario = nome, senha = senha, login = login).save()
 
-db.create_tables([Usuario, Mensagem])
+db.create_tables([Usuario, Mensagem, Sala])
 
 if __name__ == '__main__':
 	
-	db.create_tables([Usuario, Mensagem])
+	db.create_tables([Usuario, Mensagem, Sala])
 
 	u1 = Usuario(nom_usuario = "administrador2", senha = "admin", login = "admin").save()
 	#m1 = Mensagem(mensagem = "teste", usuario = 1).save()
 	#usuario = "admin"
 	#print(Usuario.select().where(Usuario.nom_usuario == usuario)[0].senha)
 	Usuario(nom_usuario = "nome", senha = "senha", login = "login").save()
-	
 
 	for i in Mensagem.select().order_by(Mensagem.cod_mensagem.desc()).limit(5):
 		print(i)

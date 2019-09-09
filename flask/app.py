@@ -4,10 +4,14 @@ from tradutor import *
 tradutor = Tradutor("pt")
 app = Flask(__name__)
 app.secret_key = 'senha'
-
 @app.route("/")
 def inicio():
 	return render_template("inicio.html")
+
+@app.route("/entrar_sala")
+def entrar_sala():
+	session["sala"] = request.args.get(sala)
+	return redirect("/sala_chat")
 
 @app.route("/sala_chat")
 def sala_chat():
@@ -25,6 +29,8 @@ def enviar():
 	salvar_mensagem((request.args.get("msg")), session["cod_usuario"], session["sala"])
 	return render_template("chat.html", msglog = pedir_mensagens(session["sala"]),  usuario = session["usuario"])
 
+@app.route("/form_login")
+
 @app.route("/login")
 def login():
 	login = request.args.get("login")
@@ -37,7 +43,7 @@ def login():
 			session["login"] = login
 			session["cod_usuario"] = pegar_cod(login)
 			session["sala"] = request.args.get("sala")
-			return redirect("/sala_chat")
+			return redirect("/")
 	return render_template("login_incorreto.html")
 
 @app.route("/form_cadastrar")
@@ -61,7 +67,24 @@ def logout():
 	session["login"] = None
 	session["cod_usuario"] = None
 	return redirect("/")
-			
+
+@app.route("/form_criar_sala")
+def form_criar_sala():
+	
+	if (not session["logado"]):
+		return redirect("/")
+	
+	return render_template("form_criar_sala.html")
+
+@app.route("/criar_sala")
+def criar_sala():
+
+	nome_sala = request.args.get("nome_sala")
+	
+	if (criar_sala_bd(nome_sala)):
+		return redirect("/")
+
+	return redirect("/form_criar_sala", status = "Erro ao criar a sala")
 
 if __name__ == "__main__":
 	app.run(debug = True, host ="0.0.0.0")
