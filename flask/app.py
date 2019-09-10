@@ -10,7 +10,7 @@ def inicio():
 
 @app.route("/entrar_sala")
 def entrar_sala():
-	session["sala"] = request.args.get(sala)
+	session["sala"] = request.args.get("sala")
 	return redirect("/sala_chat")
 
 @app.route("/sala_chat")
@@ -26,7 +26,7 @@ def pedir_mensagens(sala):
 
 @app.route("/enviar")
 def enviar():
-	salvar_mensagem((request.args.get("msg")), session["cod_usuario"], session["sala"])
+	salvar_mensagem((request.args.get("msg")), session["cod_usuario"], pegar_cod_sala(session["sala"]))
 	return render_template("chat.html", msglog = pedir_mensagens(session["sala"]),  usuario = session["usuario"])
 
 @app.route("/form_login")
@@ -79,7 +79,7 @@ def form_criar_sala():
 @app.route("/criar_sala")
 def criar_sala():
 
-	nome_sala = request.args.get("nome_sala")
+	nome_sala = request.args.get("sala")
 	
 	if (criar_sala_bd(nome_sala)):
 		return redirect("/")

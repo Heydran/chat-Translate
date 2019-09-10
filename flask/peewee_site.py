@@ -19,7 +19,7 @@ class Usuario(Modelo):
 class Sala(Modelo):
 
 	cod_sala = AutoField(primary_key = True)
-	nome = CharField()
+	nome = CharField(unique=True)
 
 class Mensagem(Modelo):
 
@@ -31,6 +31,13 @@ class Mensagem(Modelo):
 
 def salvar_mensagem(conteudo, cod_usuario, sala):
 	Mensagem(conteudo = conteudo, usuario = cod_usuario, sala = sala).save()
+
+
+def pegar_cod_sala(nome_sala):
+	try:
+		return Sala.select().where(Sala.nome == nome_sala)[0].cod_sala
+	except:
+		return None
 
 def pegar_cod(login):
 	try:
@@ -52,7 +59,7 @@ def pegar_senha(login):
 
 def criar_sala_bd(nome_sala):
 
-	if (nome_sala == ""):
+	if (nome_sala == "" and nome_sala == None):
 		return None
 
 	print(nome_sala)
@@ -62,7 +69,7 @@ def criar_sala_bd(nome_sala):
 	return True
 
 def pegar_mensagens(sala):
-	return Mensagem.select().where(Mensagem.sala == sala).order_by(Mensagem.cod_mensagem.desc()).limit(10)
+	return Mensagem.select().join(Sala).where(Sala.cod_sala == Mensagem.sala).order_by(Mensagem.cod_mensagem.desc()).limit(10)
 
 def cadastrar_usuario(login, senha, nome):
 	Usuario(nom_usuario = nome, senha = senha, login = login).save()
@@ -73,12 +80,26 @@ if __name__ == '__main__':
 	
 	db.create_tables([Usuario, Mensagem, Sala])
 
-	u1 = Usuario(nom_usuario = "administrador2", senha = "admin", login = "admin").save()
+	#u1 = Usuario(nom_usuario = "administrador2", senha = "admin", login = "admin").save()
 	#m1 = Mensagem(mensagem = "teste", usuario = 1).save()
 	#usuario = "admin"
 	#print(Usuario.select().where(Usuario.nom_usuario == usuario)[0].senha)
 	Usuario(nom_usuario = "nome", senha = "senha", login = "login").save()
 
-	for i in Mensagem.select().order_by(Mensagem.cod_mensagem.desc()).limit(5):
-		print(i)
+	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
+	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
+	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
+	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
+	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
+	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
+	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
+	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
+	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
+	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
+
+	#Sala.select().join(Mensagens).where(Sala.nome == sala).order_by(Mensagem.cod_mensagem.desc()).limit(10)
+	query = Mensagem.select().join(Sala).where(Sala.cod_sala == Mensagem.sala).order_by(Mensagem.cod_mensagem.desc()).limit(10)
+	print(query)
+	for i in query:
+		print(i.cod_mensagem)
 	
