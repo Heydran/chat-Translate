@@ -29,8 +29,8 @@ class Mensagem(Modelo):
 	sala = ForeignKeyField(Sala)
 
 
-def salvar_mensagem(conteudo, cod_usuario, sala):
-	Mensagem(conteudo = conteudo, usuario = cod_usuario, sala = sala).save()
+def salvar_mensagem(conteudo, cod_usuario, cod_sala):
+	Mensagem(conteudo = conteudo, usuario = cod_usuario, sala = cod_sala).save()
 
 
 def pegar_cod_sala(nome_sala):
@@ -68,8 +68,8 @@ def criar_sala_bd(nome_sala):
 
 	return True
 
-def pegar_mensagens(sala):
-	return Mensagem.select().join(Sala).where(Sala.cod_sala == Mensagem.sala).order_by(Mensagem.cod_mensagem.desc()).limit(10)
+def pegar_mensagens(sala, linhas = 10):
+	return Mensagem.select().join(Sala).where(sala == Mensagem.sala).order_by(Mensagem.cod_mensagem.desc()).limit(linhas)
 
 def cadastrar_usuario(login, senha, nome):
 	Usuario(nom_usuario = nome, senha = senha, login = login).save()
@@ -84,8 +84,8 @@ if __name__ == '__main__':
 	#m1 = Mensagem(mensagem = "teste", usuario = 1).save()
 	#usuario = "admin"
 	#print(Usuario.select().where(Usuario.nom_usuario == usuario)[0].senha)
-	Usuario(nom_usuario = "nome", senha = "senha", login = "login").save()
-
+	#Usuario(nom_usuario = "nome", senha = "senha", login = "login").save()
+	'''
 	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
 	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
 	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
@@ -96,10 +96,16 @@ if __name__ == '__main__':
 	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
 	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
 	Mensagem(conteudo = "conteudo", usuario = 1, sala = 1).save()
-
+	'''
 	#Sala.select().join(Mensagens).where(Sala.nome == sala).order_by(Mensagem.cod_mensagem.desc()).limit(10)
-	query = Mensagem.select().join(Sala).where(Sala.cod_sala == Mensagem.sala).order_by(Mensagem.cod_mensagem.desc()).limit(10)
-	print(query)
-	for i in query:
-		print(i.cod_mensagem)
+	#query = Mensagem.select().join(Sala).where(Sala.cod_sala == Mensagem.sala).order_by(Mensagem.cod_mensagem.desc()).limit(10)
+	#print(query)
+	#for i in query:
+	#	print(i.cod_mensagem)
+	
+	for i in Sala.select():
+		print(i.nome)
+	#Sala(nome = "test").save()
+	#print(Sala.select().where(Sala.nome == "casa")[0].cod_sala)
+
 	

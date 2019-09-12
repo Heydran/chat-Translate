@@ -7,7 +7,7 @@
 </head>
 <body>
 	{%if session["logado"]%}
-		<h2>Você esta logado como {{session["usuario"]}}</h2>
+		<h2>Você esta logado como: <font color="00AF00">{{session["usuario"]}}</font></h2>
 		<form action = /entrar_sala>
 		Sala <input type="text" name="sala"><button>Entrar</button>
 		</form>

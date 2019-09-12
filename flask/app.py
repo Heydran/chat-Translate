@@ -10,12 +10,14 @@ def inicio():
 
 @app.route("/entrar_sala")
 def entrar_sala():
-	session["sala"] = request.args.get("sala")
+	session["cod_sala"] = pegar_cod_sala(request.args.get("sala"))
+	if session["cod_sala"] == None:
+		return render_template("sala_inexistente.html")
 	return redirect("/sala_chat")
 
 @app.route("/sala_chat")
 def sala_chat():
-	return render_template("chat.html", msglog = pedir_mensagens(session["sala"]), usuario = session["usuario"])
+	return render_template("chat.html", msglog = pedir_mensagens(session["cod_sala"]), usuario = session["usuario"])
 
 def pedir_mensagens(sala):
 	global tradutor
@@ -26,8 +28,8 @@ def pedir_mensagens(sala):
 
 @app.route("/enviar")
 def enviar():
-	salvar_mensagem((request.args.get("msg")), session["cod_usuario"], pegar_cod_sala(session["sala"]))
-	return render_template("chat.html", msglog = pedir_mensagens(session["sala"]),  usuario = session["usuario"])
+	salvar_mensagem((request.args.get("msg")), session["cod_usuario"], session["cod_sala"])
+	return render_template("chat.html", msglog = pedir_mensagens(session["cod_sala"]),  usuario = session["usuario"])
 
 @app.route("/form_login")
 
@@ -82,7 +84,7 @@ def criar_sala():
 	nome_sala = request.args.get("sala")
 	
 	if (criar_sala_bd(nome_sala)):
-		return redirect("/")
+		return render_template("msg_sala_criada.html")
 
 	return redirect("/form_criar_sala", status = "Erro ao criar a sala")
 
