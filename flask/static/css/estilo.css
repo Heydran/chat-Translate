@@ -1,4 +1,5 @@
 /* CSS Document */
+
 body {
     font:12px arial;
     color: #222;
@@ -63,3 +64,7 @@ span {
 .logout { float:right; }
   
 .msgln { margin:0 0 2px 0; }
+
+#azul {
+    color:blue
+}

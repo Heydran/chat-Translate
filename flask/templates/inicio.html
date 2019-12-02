@@ -3,9 +3,13 @@
 <head>
 	<!--<meta http-equiv="refresh" content="1">-->
 	<title>Bem Vindo</title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/estilo.css')}}">
 
 </head>
 <body>
+	<div id="azul"><h1>CHATTRANS</h1>
+	<h2>This chat translates messages for your language</h2></div>
+
 	{%if session["logado"]%}
 		<h2>Você esta logado como: <font color="00AF00">{{session["usuario"]}}</font></h2>
 		<form action = /entrar_sala>
@@ -122,16 +126,19 @@
 		</select>
 
 		<button>Entrar</button>
+		<input type="button" onclick="location.href='/form_criar_sala';" value="Criar Sala"/>
+		<input type="button" onclick="location.href='/logout';" value="Deslogar"/>
 		</form>
-		<a href="/form_criar_sala">Criar Sala</a>
-		<a href="/logout">Deslogar</a>
+
 	{%else%}
 		<form action='/login'>
-			Login <input type="text" name="login"><br>
-			Senha <input type="text" name="senha"><br>
-			<button>Entrar</button>
+			<b>Login: <input type="text" name="login"><br>
+			Senha: <input type="password" name="senha"><br>
+			<input type="submit" value="Entrar"><input type="button" onclick="location.href='/form_cadastrar';" value="Cadastrar"/></b>
 		</form>
-		<a href="/form_cadastrar">Cadastrar</a>		
+		
+		
+
 	{%endif%}
 </body>
 </html>

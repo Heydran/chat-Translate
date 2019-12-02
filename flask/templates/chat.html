@@ -10,8 +10,12 @@
 <div id="wrapper">
     <div id="menu">
         <p class="welcome"> Welcome,<b>{{usuario}}</b></p>
-        <p class="logout"><a id="exit" href="/logout">Exit Chat</a> </p>  <p class="logout">&nbsp; - &nbsp;</p>
-        <p class="logout"><a id="exit" href="/">Voltar</a></p>
+        <p class="logout">
+        <input id="exit" type="button" onclick="location.href='/logout';" value="Logout"/>
+        </p>  <p class="logout">&nbsp;&nbsp;</p>
+        <p class="logout">
+            <input id= "exit" type="button" onclick="location.href='/';" value="Voltar"/>
+        </p>
         <div style="clear:both"></div>
     </div>
      
